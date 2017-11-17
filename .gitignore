@@ -1,0 +1,14 @@
+_build/build.config.php
+config.core.php
+
+# ignore grunt files
+bower_components
+node_modules
+
+# ignore composer files
+composer.phar
+#composer.json
+composer.lock
+
+# ignore composer vendor dir
+/core/components/notifier/vendor
