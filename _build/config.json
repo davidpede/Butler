@@ -1,0 +1,24 @@
+{
+  "name": "Notifier"
+  ,"lowCaseName": "notifier"
+  ,"description": "An email notification Extra for MODX Revolution"
+  ,"author": "David Pede <dev@tasianmedia.com> <https://twitter.com/davepede>"
+  ,"version": "1.0.0-beta"
+  ,"package":{
+    "actions": [{
+      "id": 1
+      ,"controller": "index"
+    }]
+    ,"systemSettings": [{
+      "key": "api_key"
+      ,"type": "textfield"
+      ,"namespace": "notifier"
+      ,"area": "api"
+    }]
+  }
+  ,"build": {
+    "readme": "docs/readme.txt"
+    ,"license": "docs/license.txt"
+    ,"changelog": "docs/changelog.txt"
+  }
+}
