@@ -1,6 +1,6 @@
 {
-  "name": "Notifier"
-  ,"lowCaseName": "notifier"
+  "name": "Butler"
+  ,"lowCaseName": "butler"
   ,"description": "An email notification Extra for MODX Revolution"
   ,"author": "David Pede <dev@tasianmedia.com> <https://twitter.com/davepede>"
   ,"version": "1.0.0-beta"
@@ -9,12 +9,46 @@
       "id": 1
       ,"controller": "index"
     }]
-    ,"systemSettings": [{
-      "key": "api_key"
-      ,"type": "textfield"
-      ,"namespace": "notifier"
-      ,"area": "api"
+    ,"menus": [{
+      "text": "Butler",
+      "action": "",
+      "parent": "topnav",
+      "icon": "",
+      "menuIndex": 99,
+      "params": "",
+      "handler": ""
+    },{
+      "text": "Tasks",
+      "description": "Manage your automated tasks",
+      "action": "tasks",
+      "parent": "Butler",
+      "icon": "",
+      "menuIndex": 0,
+      "params": "",
+      "handler": ""
+    },{
+      "text": "Notifications",
+      "description": "Manage your notifications",
+      "action": "notify/index",
+      "parent": "Butler",
+      "icon": "",
+      "menuIndex": 1,
+      "params": "",
+      "handler": ""
     }]
+    ,"systemSettings": [{
+      "key": "assets_url"
+      ,"type": "textfield"
+      ,"area": "default"
+      ,"value": "{assets_url}components/butler/"
+    }]
+  }
+  ,"database": {
+    "tables": [
+      "ButlerBaseline",
+      "ButlerScanlog",
+      "ButlerTasklog"
+    ]
   }
   ,"build": {
     "readme": "docs/readme.txt"

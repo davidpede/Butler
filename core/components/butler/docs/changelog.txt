@@ -1,0 +1,5 @@
+Changelog for Butler.
+
+Butler 1.0.0-pl (November 17, 2017)
+====================================
+- Initial release.

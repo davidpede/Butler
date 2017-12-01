@@ -1,4 +1,4 @@
-# Notifier 1.0.0-beta
+# Butler 1.0.0-beta
 ### An email notification Extra for MODX Revolution.
 
 #### Installation
@@ -6,9 +6,9 @@ Simply download through MODX Package Management, and install.
 Also supports installation via 'Git Package Management' Extra: https://github.com/theboxer/Git-Package-Management
 
 #### Documentation
-- Official Documentation: http://rtfm.modx.com/extras/revo/notifier
-- GitHub Repository: http://github.com/tasianmedia/notifier
-- Bugs & Feature Requests: http://github.com/tasianmedia/notifier/issues
+- Official Documentation: http://rtfm.modx.com/extras/revo/butler
+- GitHub Repository: http://github.com/tasianmedia/butler
+- Bugs & Feature Requests: http://github.com/tasianmedia/butler/issues
 
 If you have a bug fix or improvement and would like to submit a Pull Request, please make sure you target the 'develop' branch.
 

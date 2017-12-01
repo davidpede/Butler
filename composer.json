@@ -1,0 +1,8 @@
+{
+  "config": {
+    "vendor-dir": "core/components/butler/vendor"
+  },
+  "require": {
+    "peppeocchi/php-cron-scheduler": "2.*"
+  }
+}
