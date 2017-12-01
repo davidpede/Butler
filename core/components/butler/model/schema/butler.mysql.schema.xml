@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="Butler" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" version="1.1">
+  <object class="ButlerBaseline" table="butler_baseline" extends="xPDOSimpleObject">
+    <field key="file_name" dbtype="varchar" precision="255" phptype="string" null="true" />
+    <field key="file_path" dbtype="varchar" precision="255" phptype="string" null="true" index="index" />
+    <field key="file_hash" dbtype="char" precision="40" phptype="string" null="true" />
+    <field key="file_last_mod" dbtype="char" precision="19" phptype="string" null="true" index="index" />
+    <field key="task_id" dbtype="int" precision="10" phptype="integer" null="true" index="index" />
+
+    <index alias="task_id" name="task_id" primary="false" unique="false" type="BTREE" >
+      <column key="task_id" length="" collation="A" null="true" />
+    </index>
+    <index alias="file_path" name="file_path" primary="false" unique="false" type="BTREE" >
+      <column key="file_path" length="" collation="A" null="true" />
+    </index>
+    <index alias="file_last_mod" name="file_last_mod" primary="false" unique="false" type="BTREE" >
+      <column key="file_last_mod" length="" collation="A" null="true" />
+    </index>
+  </object>
+  <object class="ButlerScanlog" table="butler_scanlog" extends="xPDOSimpleObject">
+    <field key="stamp" dbtype="char" precision="19" phptype="string" null="true" index="index" />
+    <field key="status" dbtype="varchar" precision="10" phptype="string" null="true" />
+    <field key="file_name" dbtype="varchar" precision="255" phptype="string" null="true" />
+    <field key="file_path" dbtype="varchar" precision="255" phptype="string" null="true" index="index" />
+    <field key="file_hash_new" dbtype="char" precision="40" phptype="string" null="true" />
+    <field key="file_hash_org" dbtype="char" precision="40" phptype="string" null="true" />
+    <field key="file_last_mod" dbtype="char" precision="19" phptype="string" null="true" index="index" />
+    <field key="task_id" dbtype="int" precision="10" phptype="integer" null="true" index="index" />
+
+    <index alias="task_id" name="task_id" primary="false" unique="false" type="BTREE" >
+      <column key="task_id" length="" collation="A" null="true" />
+    </index>
+    <index alias="file_path" name="file_path" primary="false" unique="false" type="BTREE" >
+      <column key="file_path" length="" collation="A" null="true" />
+    </index>
+    <index alias="stamp" name="stamp" primary="false" unique="false" type="BTREE" >
+      <column key="stamp" length="" collation="A" null="true" />
+    </index>
+    <index alias="file_last_mod" name="file_last_mod" primary="false" unique="false" type="BTREE" >
+      <column key="file_last_mod" length="" collation="A" null="true" />
+    </index>
+  </object>
+  <object class="ButlerTasklog" table="butler_tasklog" extends="xPDOSimpleObject">
+    <field key="stamp" dbtype="char" precision="19" phptype="string" null="true" index="index" />
+    <field key="task_id" dbtype="int" precision="10" phptype="integer" null="true" index="index" />
+    <field key="task_type" dbtype="varchar" precision="12" phptype="string" null="true" />
+    <field key="task_name" dbtype="varchar" precision="255" phptype="string" null="true" />
+    <field key="msg" dbtype="text" phptype="string" null="true" />
+    <field key="duration" dbtype="varchar" precision="12" phptype="string" null="true" />
+
+    <index alias="task_id" name="task_id" primary="false" unique="false" type="BTREE" >
+      <column key="task_id" length="" collation="A" null="true" />
+    </index>
+    <index alias="stamp" name="stamp" primary="false" unique="false" type="BTREE" >
+      <column key="stamp" length="" collation="A" null="true" />
+    </index>
+  </object>
+</model>
