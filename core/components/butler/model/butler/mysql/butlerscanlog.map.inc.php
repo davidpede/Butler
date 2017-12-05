@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Butler
+ * @package butler
  */
 $xpdo_meta_map['ButlerScanlog']= array (
-  'package' => 'Butler',
+  'package' => 'butler',
   'version' => '1.1',
   'table' => 'butler_scanlog',
   'extends' => 'xPDOSimpleObject',
@@ -13,25 +13,17 @@ $xpdo_meta_map['ButlerScanlog']= array (
   ),
   'fields' => 
   array (
-    'stamp' => NULL,
     'status' => NULL,
     'file_name' => NULL,
     'file_path' => NULL,
     'file_hash_new' => NULL,
     'file_hash_org' => NULL,
     'file_last_mod' => NULL,
+    'stamp' => NULL,
     'task_id' => NULL,
   ),
   'fieldMeta' => 
   array (
-    'stamp' => 
-    array (
-      'dbtype' => 'char',
-      'precision' => '19',
-      'phptype' => 'string',
-      'null' => true,
-      'index' => 'index',
-    ),
     'status' => 
     array (
       'dbtype' => 'varchar',
@@ -69,6 +61,14 @@ $xpdo_meta_map['ButlerScanlog']= array (
       'null' => true,
     ),
     'file_last_mod' => 
+    array (
+      'dbtype' => 'char',
+      'precision' => '19',
+      'phptype' => 'string',
+      'null' => true,
+      'index' => 'index',
+    ),
+    'stamp' => 
     array (
       'dbtype' => 'char',
       'precision' => '19',

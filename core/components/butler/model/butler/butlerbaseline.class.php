@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Butler
+ * @package butler
  */
 class ButlerBaseline extends xPDOSimpleObject {}
 ?>

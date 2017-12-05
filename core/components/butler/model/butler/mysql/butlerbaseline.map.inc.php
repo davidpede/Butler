@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Butler
+ * @package butler
  */
 $xpdo_meta_map['ButlerBaseline']= array (
-  'package' => 'Butler',
+  'package' => 'butler',
   'version' => '1.1',
   'table' => 'butler_baseline',
   'extends' => 'xPDOSimpleObject',

@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Butler
+ * @package butler
  */
 $xpdo_meta_map['ButlerTasklog']= array (
-  'package' => 'Butler',
+  'package' => 'butler',
   'version' => '1.1',
   'table' => 'butler_tasklog',
   'extends' => 'xPDOSimpleObject',
@@ -13,23 +13,17 @@ $xpdo_meta_map['ButlerTasklog']= array (
   ),
   'fields' => 
   array (
-    'stamp' => NULL,
     'task_id' => NULL,
-    'task_type' => NULL,
+    'task_key' => NULL,
     'task_name' => NULL,
+    'errors' => NULL,
     'msg' => NULL,
+    'status' => NULL,
+    'stamp' => NULL,
     'duration' => NULL,
   ),
   'fieldMeta' => 
   array (
-    'stamp' => 
-    array (
-      'dbtype' => 'char',
-      'precision' => '19',
-      'phptype' => 'string',
-      'null' => true,
-      'index' => 'index',
-    ),
     'task_id' => 
     array (
       'dbtype' => 'int',
@@ -38,7 +32,7 @@ $xpdo_meta_map['ButlerTasklog']= array (
       'null' => true,
       'index' => 'index',
     ),
-    'task_type' => 
+    'task_key' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '12',
@@ -52,11 +46,32 @@ $xpdo_meta_map['ButlerTasklog']= array (
       'phptype' => 'string',
       'null' => true,
     ),
+    'errors' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+      'null' => true,
+    ),
     'msg' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
       'null' => true,
+    ),
+    'status' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '10',
+      'phptype' => 'string',
+      'null' => true,
+    ),
+    'stamp' => 
+    array (
+      'dbtype' => 'char',
+      'precision' => '19',
+      'phptype' => 'string',
+      'null' => true,
+      'index' => 'index',
     ),
     'duration' => 
     array (

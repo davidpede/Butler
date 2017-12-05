@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Butler
+ * @package butler
  */
 class ButlerScanlog extends xPDOSimpleObject {}
 ?>
