@@ -8,16 +8,44 @@
  */
 class Notifier extends Butler {
 
-  public function run($run) {
-    //fetch notifications by task id + status
-    //foreach notification
-    //check flag setting
-    //check valid tpl
-    //getEmailAds
-    //sendMail
-    //log to tasklog
-    //error checks
-    //log to runlog
+  public function run($task) {
+    //Fetch notifications
+    $query = $this->modx->newQuery('ButlerNotifier');
+    $query->where(array(
+      'task_id' => $task['task_id']
+      ,'status' => 1
+    ));
+    $query->select($this->modx->getSelectColumns('ButlerNotifier','ButlerNotifier','',''));
+    if ($query->prepare() && $query->stmt->execute()) {
+      $configs = $query->stmt->fetchAll(PDO::FETCH_ASSOC);
+      //Fetch current run object
+      $run = $this->modx->getObject('ButlerRunlog',$task['run_id']);
+    }
+
+    foreach ($configs as $email) {
+      //check flag config
+      if ($email['flag'] == 1 && $run->get('notify_flag') !== 1) {
+        $this->logMsg(array(
+          'source' => 'NOTIFIER',
+          'type' => 'DEBUG',
+          'msg' => $email['name'] . ' skipped. Notify flag required but not set by task.',
+        ),$task);
+        $this->modx->log(xPDO::LOG_LEVEL_ERROR,'$email NO FLAG: ' . print_r($email, true));
+      } else {
+        //send
+        $this->modx->log(xPDO::LOG_LEVEL_ERROR,'$email HAS FLAG: ' . print_r($email, true));
+      }
+
+      //getEmailAds
+      //sendMail
+      //log to tasklog
+      //error checks
+      //log to runlog
+
+    }
+
+    $this->modx->log(xPDO::LOG_LEVEL_ERROR,'Notifier->run(): ' . print_r($run->toArray(), true));
+    return true;
   }
 
   public function getUser($task) {
@@ -46,10 +74,10 @@ class Notifier extends Butler {
   }
 
   public function sendEmail($email,$name,$subject,$properties) {
-    
-    if (empty($properties['tpl'])) $properties['tpl'] = '';
+
+    if (empty($properties['tpl'])) $properties['tpl'] = 'notifierEmailTpl';
     $tpl = $this->getChunk($properties['tpl'],$properties);
-    
+
     $this->modx->getService('mail', 'mail.modPHPMailer');
     $this->modx->mail->set(modMail::MAIL_BODY, $tpl);
     $this->modx->mail->set(modMail::MAIL_FROM, $this->modx->getOption('emailsender'));
