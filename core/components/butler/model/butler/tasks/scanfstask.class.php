@@ -247,7 +247,8 @@ class scanFsTask extends Butler {
         }
       } else {
         $this->logMsg(array(
-          'msg' => 'First scan of directory. Nothing to compare.',
+          'type' => 'DEBUG'
+          ,'msg' => 'First scan of directory. Nothing to compare.',
         ),$task);
       }
     } else {

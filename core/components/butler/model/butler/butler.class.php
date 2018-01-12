@@ -58,8 +58,8 @@ class Butler {
         //Notifier
         if ($task['task_notify'] == 1) {
           $notifier = $this->modx->getService('notifier','butler.Notifier',$this->config['modelPath']);
-          //$return = $notifier->run($run->toArray());
-          $this->modx->log(xPDO::LOG_LEVEL_ERROR,'Label: ' . print_r($run->toArray(), true));
+          //run notifier
+          $return = $notifier->run($task);
           if ($return) {
             $run->set('notifier_status', 'SUCCESS');
           } else {
@@ -68,6 +68,7 @@ class Butler {
         } else {
           $this->logMsg(array(
             'source' => 'NOTIFIER',
+            'type' => 'DEBUG',
             'msg' => 'Notifier disabled',
           ),$task);
           $run->set('notifier_status', 'DISABLED');
