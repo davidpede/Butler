@@ -17,32 +17,50 @@ require_once $butler->config['vendorPath'] . 'autoload.php';
 use GO\Scheduler;
 $scheduler = new Scheduler();
 
-$butler->cronTest('Cron ran me');
-
 //Tasks
 /*$scheduler->call(function () use ($butler) {
   $butler->cronTest('Scheduler ran me!');
 })->at($cron);*/
 
-$cron = '*/10 * * * *';
+//Fetch Tasks
+$query = $modx->newQuery('ButlerTasks');
+$query->where(array(
+  'status' => 1
+));
+$query->select($modx->getSelectColumns('ButlerTasks','ButlerTasks','task_',''));
+if ($query->prepare() && $query->stmt->execute()) {
+  $tasks = $query->stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+foreach ($tasks as $task) {
+  //$modx->log(xPDO::LOG_LEVEL_ERROR,'Label: ' . print_r($task, true));
+  try {
+    $scheduler->call(function ($args) use ($butler) {
+      $butler->runTask($args);
+    },[$task])->at($task['task_cron_exp']);
+  } catch (Exception $e) {
+    $modx->log(xPDO::LOG_LEVEL_ERROR,print_r($e->getMessage(), true),'','Butler - Task ' . $task['task_id']);
+    throw $e;
+  }
+}
 
-$scheduler->call(function () use ($butler) {
-  $task_key = 'Scan';
-  $task_id = 1;
-  $args = array(
-    'path' => 'C:/xampp/htdocs/repo/revolution/assets/lib/'
-  );
-  $butler->runTask($task_key,$task_id,$args);
-})->at($cron);
+//OPTION ONE
+/*$obj = $modx->getObject('ButlerTasklog', array('task_id' => 2));
+$task = $obj->toArray();*/
 
-$scheduler->call(function () use ($butler) {
-  $task_key = 'Scan';
-  $task_id = 2;
-  $args = array(
-    'path' => 'C:/xampp/htdocs/repo/revolution/assets/modx-2.6.0-pl/'
-  );
-  $butler->runTask($task_key,$task_id,$args);
-})->at('*/5 * * * *');
+//OPTION TWO
+//$task = $modx->getObject('ButlerTasklog', array('task_id' => 2));
+
+//$task = array(
+//  'task_id' => 2,
+//  'task_key' => 'scanFsTask',
+//  'task_name' => 'Resource Lib Scan',
+//  'task_path' => 'C:/xampp/htdocs/repo/revolution/assets/lib/',
+//  'task_cron_exp' => '*/1 * * * *',
+//  'task_notify_id' => 1,
+//);
+//$scheduler->call(function ($args) use ($butler) {
+//  $butler->runTask($args);
+//},[$task])->at($task['task_cron_exp']);
 
 // Let the scheduler execute jobs which are due.
 $scheduler->run();
