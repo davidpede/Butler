@@ -39,8 +39,7 @@
 		<field key="status" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
 		<field key="name" dbtype="varchar" precision="255" phptype="string" null="true" />
 		<field key="subject" dbtype="varchar" precision="255" phptype="string" null="true" />
-		<field key="wrapper_tpl" dbtype="varchar" precision="255" phptype="string" null="true" />
-		<field key="inner_tpl" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="tpl" dbtype="varchar" precision="255" phptype="string" null="true" />
 		<field key="flag" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" />
 		<field key="email" dbtype="text" phptype="string" null="true" />
 		<field key="users" dbtype="text" phptype="string" null="true" />

@@ -16,8 +16,7 @@ $xpdo_meta_map['ButlerNotifier']= array (
     'status' => 0,
     'name' => NULL,
     'subject' => NULL,
-    'wrapper_tpl' => NULL,
-    'inner_tpl' => NULL,
+    'tpl' => NULL,
     'flag' => 0,
     'email' => NULL,
     'users' => NULL,
@@ -50,14 +49,7 @@ $xpdo_meta_map['ButlerNotifier']= array (
       'phptype' => 'string',
       'null' => true,
     ),
-    'wrapper_tpl' => 
-    array (
-      'dbtype' => 'varchar',
-      'precision' => '255',
-      'phptype' => 'string',
-      'null' => true,
-    ),
-    'inner_tpl' => 
+    'tpl' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '255',
