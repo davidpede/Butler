@@ -7,7 +7,7 @@ Since: July 24, 2017
 Author: David Pede <d.pede@prp-co.uk>
 Copyright: (C) 2017 PRP Architects LLP. All rights reserved. <brand@prp-co.uk>
 
-An email notification Extra for MODX Revolution.
+A task scheduling and notification Extra for MODX Revolution.
 
 Official Documentation:
 http://rtfm.modx.com/extras/revo/butler

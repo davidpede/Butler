@@ -1,5 +1,5 @@
 # Butler 1.0.0-beta
-### An email notification Extra for MODX Revolution.
+### A task scheduling and notification Extra for MODX Revolution.
 
 #### Installation
 Simply download through MODX Package Management, and install.
@@ -13,9 +13,9 @@ Also supports installation via 'Git Package Management' Extra: https://github.co
 If you have a bug fix or improvement and would like to submit a Pull Request, please make sure you target the 'develop' branch.
 
 #### Details
-Author: David Pede (dev@tasianmedia.com) (https://twitter.com/davepede)
+Author: David Pede (dev@tasian.media) (https://twitter.com/davepede)
 
-Copyright: (C) 2017 David Pede. All rights reserved. (dev@tasianmedia.com)
+Copyright: (C) 2017 David Pede. All rights reserved. (dev@tasian.media)
 
 #### License
 Released under the GNU General Public License; either version 2 of the License, or (at your option) any later version.
