@@ -8,7 +8,19 @@
  */
 class Notifier extends Butler {
 
-  public function getNotifyTpl($task) {
+  public function run($run) {
+    //fetch notifications by task id + status
+    //foreach notification
+    //check flag setting
+    //check valid tpl
+    //getEmailAds
+    //sendMail
+    //log to tasklog
+    //error checks
+    //log to runlog
+  }
+
+  public function getUser($task) {
 
   }
 
@@ -29,9 +41,29 @@ class Notifier extends Butler {
     return $output;
   }
 
-  public function getUserById($task) {
+  public function getTpl($task) {
 
   }
 
+  public function sendEmail($email,$name,$subject,$properties) {
+    
+    if (empty($properties['tpl'])) $properties['tpl'] = '';
+    $tpl = $this->getChunk($properties['tpl'],$properties);
+    
+    $this->modx->getService('mail', 'mail.modPHPMailer');
+    $this->modx->mail->set(modMail::MAIL_BODY, $tpl);
+    $this->modx->mail->set(modMail::MAIL_FROM, $this->modx->getOption('emailsender'));
+    $this->modx->mail->set(modMail::MAIL_FROM_NAME, $this->modx->getOption('site_name'));
+    $this->modx->mail->set(modMail::MAIL_SENDER, $this->modx->getOption('emailsender'));
+    $this->modx->mail->set(modMail::MAIL_SUBJECT, $subject);
+
+    $this->modx->mail->address('to', $email, $name);
+    $this->modx->mail->address('reply-to', $this->modx->getOption('emailsender'));
+    $this->modx->mail->setHTML(true);
+
+    $sent = $this->modx->mail->send();
+    $this->modx->mail->reset();
+    return $sent;
+  }
 }
 ?>

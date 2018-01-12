@@ -36,6 +36,17 @@
       "params": "",
       "handler": ""
     }]
+    ,"elements": {
+      "categories": [{
+        "name": "Notifier"
+      }]
+      ,"chunks": [{
+        "name": "notifierEmailTpl"
+        ,"description": "Default email tpl"
+        ,"category": "Notifier"
+        ,"file": "notifier/chunk.notifier.email.tpl"
+      }]
+    }
     ,"systemSettings": [{
       "key": "assets_url"
       ,"type": "textfield"
@@ -46,6 +57,7 @@
   ,"database": {
     "tables": [
       "ButlerTasks",
+      "ButlerNotifier",
       "ButlerBaseline",
       "ButlerRunlog",
       "ButlerLog",
