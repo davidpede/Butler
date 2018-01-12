@@ -17,6 +17,58 @@
 			<column key="file_last_mod" length="" collation="A" null="true" />
 		</index>
 	</object>
+	<object class="ButlerLog" table="butler_log" extends="xPDOSimpleObject">
+		<field key="task_id" dbtype="int" precision="10" phptype="integer" null="true" index="index" />
+		<field key="run_id" dbtype="int" precision="10" phptype="integer" null="true" index="index" />
+		<field key="source" dbtype="varchar" precision="10" phptype="string" null="true" default="TASK" />
+		<field key="type" dbtype="varchar" precision="10" phptype="string" null="true" default="INFO" />
+		<field key="msg" dbtype="text" phptype="string" null="true" />
+		<field key="stamp" dbtype="char" precision="19" phptype="string" null="true" index="index" />
+
+		<index alias="task_id" name="task_id" primary="false" unique="false" type="BTREE" >
+			<column key="task_id" length="" collation="A" null="true" />
+		</index>
+		<index alias="stamp" name="stamp" primary="false" unique="false" type="BTREE" >
+			<column key="stamp" length="" collation="A" null="true" />
+		</index>
+		<index alias="run_id" name="run_id" primary="false" unique="false" type="BTREE" >
+			<column key="run_id" length="" collation="A" null="true" />
+		</index>
+	</object>
+	<object class="ButlerNotifier" table="butler_notifier" extends="xPDOSimpleObject">
+		<field key="status" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
+		<field key="name" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="subject" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="wrapper_tpl" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="inner_tpl" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="flag" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" />
+		<field key="email" dbtype="text" phptype="string" null="true" />
+		<field key="users" dbtype="text" phptype="string" null="true" />
+		<field key="usergroups" dbtype="text" phptype="string" null="true" />
+		<field key="task_id" dbtype="int" precision="10" phptype="integer" null="true" index="index" />
+
+		<index alias="task_id" name="task_id" primary="false" unique="false" type="BTREE" >
+			<column key="task_id" length="" collation="A" null="true" />
+		</index>
+		<index alias="status" name="status" primary="false" unique="false" type="BTREE" >
+			<column key="status" length="" collation="A" null="false" />
+		</index>
+	</object>
+	<object class="ButlerRunlog" table="butler_runlog" extends="xPDOSimpleObject">
+		<field key="task_id" dbtype="int" precision="10" phptype="integer" null="true" index="index" />
+		<field key="task_type" dbtype="varchar" precision="12" phptype="string" null="true" />
+		<field key="task_name" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="task_status" dbtype="varchar" precision="10" phptype="string" null="true" />
+		<field key="notify_flag" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
+		<field key="notifier_status" dbtype="varchar" precision="10" phptype="string" null="true" />
+		<field key="start" dbtype="char" precision="19" phptype="string" null="true" />
+		<field key="finish" dbtype="char" precision="19" phptype="string" null="true" />
+		<field key="duration" dbtype="varchar" precision="12" phptype="string" null="true" />
+
+		<index alias="task_id" name="task_id" primary="false" unique="false" type="BTREE" >
+			<column key="task_id" length="" collation="A" null="true" />
+		</index>
+	</object>
 	<object class="ButlerScanlog" table="butler_scanlog" extends="xPDOSimpleObject">
 		<field key="status" dbtype="varchar" precision="10" phptype="string" null="true" />
 		<field key="file_name" dbtype="varchar" precision="255" phptype="string" null="true" />
@@ -26,6 +78,7 @@
 		<field key="file_last_mod" dbtype="char" precision="19" phptype="string" null="true" index="index" />
 		<field key="stamp" dbtype="char" precision="19" phptype="string" null="true" index="index" />
 		<field key="task_id" dbtype="int" precision="10" phptype="integer" null="true" index="index" />
+		<field key="run_id" dbtype="int" precision="10" phptype="integer" null="true" index="index" />
 
 		<index alias="task_id" name="task_id" primary="false" unique="false" type="BTREE" >
 			<column key="task_id" length="" collation="A" null="true" />
@@ -39,22 +92,23 @@
 		<index alias="file_last_mod" name="file_last_mod" primary="false" unique="false" type="BTREE" >
 			<column key="file_last_mod" length="" collation="A" null="true" />
 		</index>
-	</object>
-	<object class="ButlerTasklog" table="butler_tasklog" extends="xPDOSimpleObject">
-		<field key="task_id" dbtype="int" precision="10" phptype="integer" null="true" index="index" />
-		<field key="task_key" dbtype="varchar" precision="12" phptype="string" null="true" />
-		<field key="task_name" dbtype="varchar" precision="255" phptype="string" null="true" />
-		<field key="errors" dbtype="text" phptype="string" null="true" />
-		<field key="msg" dbtype="text" phptype="string" null="true" />
-		<field key="status" dbtype="varchar" precision="10" phptype="string" null="true" />
-		<field key="stamp" dbtype="char" precision="19" phptype="string" null="true" index="index" />
-		<field key="duration" dbtype="varchar" precision="12" phptype="string" null="true" />
-
-		<index alias="task_id" name="task_id" primary="false" unique="false" type="BTREE" >
-			<column key="task_id" length="" collation="A" null="true" />
+		<index alias="run_id" name="run_id" primary="false" unique="false" type="BTREE" >
+			<column key="run_id" length="" collation="A" null="true" />
 		</index>
-		<index alias="stamp" name="stamp" primary="false" unique="false" type="BTREE" >
-			<column key="stamp" length="" collation="A" null="true" />
+	</object>
+	<object class="ButlerTasks" table="butler_tasks" extends="xPDOSimpleObject">
+		<field key="type" dbtype="varchar" precision="12" phptype="string" null="true" index="index" />
+		<field key="name" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="status" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
+		<field key="path" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="cron_exp" dbtype="varchar" precision="32" phptype="string" null="true" />
+		<field key="notify" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
+
+		<index alias="type" name="type" primary="false" unique="false" type="BTREE" >
+			<column key="type" length="" collation="A" null="true" />
+		</index>
+		<index alias="status" name="status" primary="false" unique="false" type="BTREE" >
+			<column key="status" length="" collation="A" null="false" />
 		</index>
 	</object>
 </model>

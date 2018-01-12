@@ -21,6 +21,7 @@ $xpdo_meta_map['ButlerScanlog']= array (
     'file_last_mod' => NULL,
     'stamp' => NULL,
     'task_id' => NULL,
+    'run_id' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -77,6 +78,14 @@ $xpdo_meta_map['ButlerScanlog']= array (
       'index' => 'index',
     ),
     'task_id' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '10',
+      'phptype' => 'integer',
+      'null' => true,
+      'index' => 'index',
+    ),
+    'run_id' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',
@@ -144,6 +153,22 @@ $xpdo_meta_map['ButlerScanlog']= array (
       'columns' => 
       array (
         'file_last_mod' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => true,
+        ),
+      ),
+    ),
+    'run_id' => 
+    array (
+      'alias' => 'run_id',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'run_id' => 
         array (
           'length' => '',
           'collation' => 'A',

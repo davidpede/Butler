@@ -1,7 +1,7 @@
 {
   "name": "Butler"
   ,"lowCaseName": "butler"
-  ,"description": "An email notification Extra for MODX Revolution"
+  ,"description": "A task scheduling and notification Extra for MODX Revolution."
   ,"author": "David Pede <dev@tasianmedia.com> <https://twitter.com/davepede>"
   ,"version": "1.0.0-beta"
   ,"package":{
@@ -45,9 +45,11 @@
   }
   ,"database": {
     "tables": [
+      "ButlerTasks",
       "ButlerBaseline",
-      "ButlerScanlog",
-      "ButlerTasklog"
+      "ButlerRunlog",
+      "ButlerLog",
+      "ButlerScanlog"
     ]
   }
   ,"build": {
