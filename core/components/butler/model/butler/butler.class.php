@@ -31,35 +31,37 @@ class Butler {
    * Start a task execution
    *
    * @param array $task
-   * @required $task['task_id']
-   * @required $task['task_key']
+   * @required $task['id']
+   * @required $task['key']
    *
    * @return $this
    */
   public function runTask($task) {
     //Init
-    $butler = $this->modx->getService($task['task_type'],'butler.tasks.'.$task['task_type'],$this->config['modelPath']);
-    $run = $this->startRun($task);
+    $butler = $this->modx->getService($task['type'],'butler.tasks.'.$task['type'],$this->config['modelPath']);
+    $run = $this->startRun($task); //obj
     //Start the run
-    if ($run && $butler instanceof $task['task_type']) {
+    if ($run && $butler instanceof $task['type']) {
       $timer = microtime(true);
       $run->set('task_status', 'ACTIVE');
       $run->set('start', date('Y-m-d H:i:s'));
       $run->save();
+      //Set the runlog params
+      $log = array(
+        'task_id' => $task['id'],
+        'run_id' => $run->get('id')
+      );
       //Run the task
-      $task['run_id'] = $run->get('id');
-      $return = $butler->run($task);
-      //Done - log status after error check
+      $return = $butler->run($task,$log);
       if ($return) {
-        //$this->modx->log(xPDO::LOG_LEVEL_ERROR,'Run: ' . print_r($run->toArray(), true));
-        //$this->modx->log(xPDO::LOG_LEVEL_ERROR,'Task: ' . print_r($task, true));
         $run->set('task_status', 'SUCCESS');
+        $run->set('duration',round(microtime(true) - $timer, 5));
         $run->save();
         //Notifier
-        if ($task['task_notify'] == 1) {
+        if ($task['notify'] == 1) {
           $notifier = $this->modx->getService('notifier','butler.Notifier',$this->config['modelPath']);
           //run notifier
-          $return = $notifier->run($task);
+          $return = $notifier->run($task,$log);
           if ($return) {
             $run->set('notifier_status', 'SUCCESS');
           } else {
@@ -70,17 +72,16 @@ class Butler {
             'source' => 'NOTIFIER',
             'type' => 'DEBUG',
             'msg' => 'Notifier disabled',
-          ),$task);
+          ),$log);
           $run->set('notifier_status', 'DISABLED');
         }
       } else {
         $run->set('task_status', 'FAILED');
       }
       $run->set('finish', date('Y-m-d H:i:s'));
-      $run->set('duration',round(microtime(true) - $timer, 5));
       $run->save();
     } else {
-      $this->modx->log(xPDO::LOG_LEVEL_ERROR,'runTask() FAILED','','Butler - Task ' . $task['task_id']);
+      $this->modx->log(xPDO::LOG_LEVEL_ERROR,'runTask() FAILED','','Butler - Task ' . $task['id']);
     }
     return false;
   }
@@ -88,12 +89,20 @@ class Butler {
    * Create a task execution in ButlerRunlog
    *
    * @param array $task - Array of values to be set
-   * @required $task['task_id']
+   * @required $task['id']
+   * @required $task['type']
+   * @required $task['name']
    *
    * @return object $run
    */
   public function startRun($task) {
-    $run = $this->modx->newObject('ButlerRunlog',$task);
+    $run = $this->modx->newObject('ButlerRunlog');
+    $data = array(
+      'task_id' => $task['id'],
+      'task_type' => $task['type'],
+      'task_name' => $task['name']
+    );
+    $run->fromArray($data);
     if ($run->save()) {
       return $run;
     }
@@ -102,14 +111,14 @@ class Butler {
   /**
    * Update a task execution in ButlerRunlog
    *
-   * @param int $run_id - ID of Runlog to update
+   * @param array $log - Task and run id numbers
    * @param array $data - Array of values to be set
-   * @required $run_id
+   * @required $log['run_id']
    *
    * @return bool
    */
-  public function updateRun($data,$run_id) {
-    $run = $this->modx->getObject('ButlerRunlog',$run_id);
+  public function updateRun($data,$log) {
+    $run = $this->modx->getObject('ButlerRunlog',$log['run_id']);
     if ($data) {
       $run->fromArray($data);
       if ($run->save()) {
@@ -122,17 +131,16 @@ class Butler {
    * Log a message to ButlerLog
    *
    * @param array $message - Array of values to be set related to the message
-   * @param array $task - Array of values to be set related to the task
-   * @required $task['task_id']
-   * @required $task['run_id']
+   * @param array $log - Task and run id numbers
+   * @required $log['task_id']
+   * @required $log['run_id']
    *
    * @return bool
    */
-  public function logMsg($msg,$task) {
-    $details = array_merge($msg,$task);
-    $log = $this->modx->newObject('ButlerLog',$details);
-    $log->set('stamp', date('Y-m-d H:i:s'));
-    if ($log->save()) {
+  public function logMsg($msg,$log) {
+    $entry = $this->modx->newObject('ButlerLog',array_merge($msg,$log));
+    $entry->set('stamp', date('Y-m-d H:i:s'));
+    if ($entry->save()) {
       return true;
     }
     return false;

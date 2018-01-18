@@ -8,10 +8,10 @@
  */
 class scanFsTask extends Butler {
 
-  public function getLastScan($task) {
+  public function getLastScan($task,$log) {
     $c = $this->modx->newQuery('ButlerRunlog');
     $c->where(array(
-      'task_id' => $task['task_id'],
+      'task_id' => $log['task_id'],
       'task_status:NOT LIKE' => 'ACTIVE'
     ));
     $c->select('finish');
@@ -25,10 +25,10 @@ class scanFsTask extends Butler {
     return $output;
   }
 
-  public function getBaseline($task) {
+  public function getBaseline($task,$log) {
     $query = $this->modx->newQuery('ButlerBaseline');
     $query->where(array(
-      'task_id' => $task['task_id'],
+      'task_id' => $log['task_id'],
     ));
     $query->select('file_name,file_path,file_hash,file_last_mod');
     $query->sortby('file_path','ASC');
@@ -52,11 +52,12 @@ class scanFsTask extends Butler {
     return $response;
   }
 
-  public function run($task) {
+  public function run($task,$log) {
+    //$this->modx->log(xPDO::LOG_LEVEL_ERROR,'$task: ' . print_r($task, true));
     $start = microtime(true);
     $stamp = date('Y-m-d H:i:s');
     //Basic checks
-    if (file_exists($task['task_path'])) {
+    if (file_exists($task['path'])) {
       //Init arrays
       $current = array();
       $new = array();
@@ -68,13 +69,13 @@ class scanFsTask extends Butler {
       $excl_dir = array(); //EXCLUDED sub-directories. Empty array will return ALL
       $no_ext = true; //Scan extensionless files?
 
-      $dir = new RecursiveDirectoryIterator($task['task_path']);
+      $dir = new RecursiveDirectoryIterator($task['path']);
       $iter = new RecursiveIteratorIterator($dir);
 
-      $baseline = $this->getBaseline($task);
+      $baseline = $this->getBaseline($task,$log);
       if (!$baseline) { $baseline = array(); }
 
-      $last_run = $this->getLastScan($task);
+      $last_run = $this->getLastScan($task,$log);
       $firstscan = ($last_run) ? false : true;
 
       //START SCAN
@@ -122,7 +123,7 @@ class scanFsTask extends Butler {
                 'file_path' => $file_path,
                 'file_hash' => $new[$file_path]['file_hash'],
                 'file_last_mod' => $new[$file_path]['file_last_mod'],
-                'task_id' => $task['task_id']
+                'task_id' => $log['task_id']
               ));
               $file->save();
               //LOG new file EXCEPT if $firstscan
@@ -135,8 +136,8 @@ class scanFsTask extends Butler {
                   'file_path' => $file_path,
                   'file_hash_new' => $new[$file_path]['file_hash'],
                   'file_last_mod' => $new[$file_path]['file_last_mod'],
-                  'task_id' => $task['task_id'],
-                  'run_id' => $task['run_id']
+                  'task_id' => $log['task_id'],
+                  'run_id' => $log['run_id']
                 ));
                 $scanlog->save();
               }
@@ -153,7 +154,7 @@ class scanFsTask extends Butler {
                 );
                 //UPDATE modified file record in baseline
                 $row = $this->modx->getObject('ButlerBaseline', array(
-                  'task_id' => $task['task_id'],
+                  'task_id' => $log['task_id'],
                   'file_path' => $file_path
                 ));
                 if ($row) {
@@ -174,8 +175,8 @@ class scanFsTask extends Butler {
                   'file_hash_new' => $modified[$file_path]['file_hash_new'],
                   'file_hash_org' => $modified[$file_path]['file_hash_org'],
                   'file_last_mod' => $modified[$file_path]['file_last_mod'],
-                  'task_id' => $task['task_id'],
-                  'run_id' => $task['run_id']
+                  'task_id' => $log['task_id'],
+                  'run_id' => $log['run_id']
                 ));
                 $scanlog->save();
               }
@@ -193,7 +194,7 @@ class scanFsTask extends Butler {
       {
         //REMOVE deleted file record in baseline
         $row = $this->modx->getObject('ButlerBaseline', array(
-          'task_id' => $task['task_id'],
+          'task_id' => $log['task_id'],
           'file_path' => $key
         ));
         if ($row) {
@@ -208,8 +209,8 @@ class scanFsTask extends Butler {
           'file_path' => $key,
           'file_hash_org' => $deleted[$key]['file_hash'],
           'file_last_mod' => $deleted[$key]['file_last_mod'],
-          'task_id' => $task['task_id'],
-          'run_id' => $task['run_id']
+          'task_id' => $log['task_id'],
+          'run_id' => $log['run_id']
         ));
         $scanlog->save();
       }
@@ -224,38 +225,38 @@ class scanFsTask extends Butler {
 
       $this->logMsg(array(
         'msg' => $file_count . ' files scanned',
-      ),$task);
+      ),$log);
 
       if (!$firstscan) {
         $this->logMsg(array(
           'msg' => $total_changes . ' changes detected',
-        ),$task);
+        ),$log);
         if ($total_changes > 0) {
           $this->logMsg(array(
             'msg' => $count_new . ' new files',
-          ),$task);
+          ),$log);
           $this->logMsg(array(
             'msg' => $count_modified . ' modified files',
-          ),$task);
+          ),$log);
           $this->logMsg(array(
             'msg' => $count_deleted . ' deleted files',
-          ),$task);
+          ),$log);
           //Set notifer flag
           $this->updateRun(array(
             'notify_flag' => 1
-          ),$task['run_id']);
+          ),$log);
         }
       } else {
         $this->logMsg(array(
           'type' => 'DEBUG'
           ,'msg' => 'First scan of directory. Nothing to compare.',
-        ),$task);
+        ),$log);
       }
     } else {
       $this->logMsg(array(
         'type' => 'ERROR',
-        'msg' => 'Scan directory not found: ' . $task['task_path'],
-      ),$task);
+        'msg' => 'Scan directory not found: ' . $task['path'],
+      ),$log);
       return false;
     }
     return true;

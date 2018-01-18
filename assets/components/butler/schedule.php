@@ -17,17 +17,12 @@ require_once $butler->config['vendorPath'] . 'autoload.php';
 use GO\Scheduler;
 $scheduler = new Scheduler();
 
-//Tasks
-/*$scheduler->call(function () use ($butler) {
-  $butler->cronTest('Scheduler ran me!');
-})->at($cron);*/
-
 //Fetch Tasks
 $query = $modx->newQuery('ButlerTasks');
 $query->where(array(
   'status' => 1
 ));
-$query->select($modx->getSelectColumns('ButlerTasks','ButlerTasks','task_',''));
+$query->select(array('ButlerTasks.*'));
 if ($query->prepare() && $query->stmt->execute()) {
   $tasks = $query->stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -36,31 +31,12 @@ foreach ($tasks as $task) {
   try {
     $scheduler->call(function ($args) use ($butler) {
       $butler->runTask($args);
-    },[$task])->at($task['task_cron_exp']);
+    },[$task])->at($task['cron_exp']);
   } catch (Exception $e) {
-    $modx->log(xPDO::LOG_LEVEL_ERROR,print_r($e->getMessage(), true),'','Butler - Task ' . $task['task_id']);
+    $modx->log(xPDO::LOG_LEVEL_ERROR,print_r($e->getMessage(), true),'','Butler - Task ' . $task['id']);
     throw $e;
   }
 }
-
-//OPTION ONE
-/*$obj = $modx->getObject('ButlerTasklog', array('task_id' => 2));
-$task = $obj->toArray();*/
-
-//OPTION TWO
-//$task = $modx->getObject('ButlerTasklog', array('task_id' => 2));
-
-//$task = array(
-//  'task_id' => 2,
-//  'task_key' => 'scanFsTask',
-//  'task_name' => 'Resource Lib Scan',
-//  'task_path' => 'C:/xampp/htdocs/repo/revolution/assets/lib/',
-//  'task_cron_exp' => '*/1 * * * *',
-//  'task_notify_id' => 1,
-//);
-//$scheduler->call(function ($args) use ($butler) {
-//  $butler->runTask($args);
-//},[$task])->at($task['task_cron_exp']);
 
 // Let the scheduler execute jobs which are due.
 $scheduler->run();
