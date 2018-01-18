@@ -89,6 +89,10 @@
     ]
   }
   ,"build": {
+    "resolver": {
+      "before": ["resolve.remove_tables.php"]
+      ,"after": ["resolve.synctables.php"]
+    },
     "readme": "docs/readme.txt"
     ,"license": "docs/license.txt"
     ,"changelog": "docs/changelog.txt"
