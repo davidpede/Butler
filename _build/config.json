@@ -9,42 +9,66 @@
       "id": 1
       ,"controller": "index"
     }]
-    ,"menus": [{
-      "text": "Butler",
-      "action": "",
-      "parent": "topnav",
-      "icon": "",
-      "menuIndex": 99,
-      "params": "",
-      "handler": ""
-    },{
-      "text": "Tasks",
-      "description": "Manage your automated tasks",
-      "action": "tasks",
-      "parent": "Butler",
-      "icon": "",
-      "menuIndex": 0,
-      "params": "",
-      "handler": ""
-    },{
-      "text": "Notifications",
-      "description": "Manage your notifications",
-      "action": "notify/index",
-      "parent": "Butler",
-      "icon": "",
-      "menuIndex": 1,
-      "params": "",
-      "handler": ""
-    }]
     ,"elements": {
       "categories": [{
         "name": "Notifier"
+      }]
+      ,"snippets": [{
+        "name": "getButlerLog"
+        ,"description": "Return logged messages for a specific run."
+        ,"file": "snippet.getlist.log.php"
+        ,"properties": [{
+          "name": "run_id"
+          ,"description": "Butler run id"
+          ,"type": "integer"
+          ,"value": ""
+        },{
+          "name": "rowTpl"
+          ,"description": "Name of a chunk serving as a template."
+          ,"type": "textfield"
+          ,"value": ""
+        },{
+          "name": "where"
+          ,"description": "JSON encoded expression of criteria to build additional where clauses from."
+          ,"type": "textfield"
+          ,"value": ""
+        }]
+      },{
+        "name": "getButlerScanlog"
+        ,"description": "Return logged scan messages for a specific run."
+        ,"file": "snippet.getlist.scanlog.php"
+        ,"properties": [{
+          "name": "run_id"
+          ,"description": "Butler run id"
+          ,"type": "integer"
+          ,"value": ""
+        },{
+          "name": "rowTpl"
+          ,"description": "Name of a chunk serving as a template."
+          ,"type": "textfield"
+          ,"value": ""
+        },{
+          "name": "where"
+          ,"description": "JSON encoded expression of criteria to build additional where clauses from."
+          ,"type": "textfield"
+          ,"value": ""
+        }]
       }]
       ,"chunks": [{
         "name": "notifierEmailTpl"
         ,"description": "Default email tpl"
         ,"category": "Notifier"
         ,"file": "notifier/chunk.notifier.email.tpl"
+      },{
+        "name": "butlerLogRowTpl"
+        ,"description": "Default log message tpl"
+        ,"category": "Notifier"
+        ,"file": "notifier/chunk.notifier.logmsg.tpl"
+      },{
+        "name": "butlerScanlogRowTpl"
+        ,"description": "Default scanlog message tpl"
+        ,"category": "Notifier"
+        ,"file": "notifier/chunk.notifier.scanlog.msg.tpl"
       }]
     }
     ,"systemSettings": [{
@@ -57,7 +81,7 @@
   ,"database": {
     "tables": [
       "ButlerTasks",
-      "ButlerNotifier",
+      "ButlerAlerts",
       "ButlerBaseline",
       "ButlerRunlog",
       "ButlerLog",
