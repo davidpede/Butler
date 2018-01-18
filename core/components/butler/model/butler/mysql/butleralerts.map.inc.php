@@ -2,10 +2,10 @@
 /**
  * @package butler
  */
-$xpdo_meta_map['ButlerNotifier']= array (
+$xpdo_meta_map['ButlerAlerts']= array (
   'package' => 'butler',
   'version' => '1.1',
-  'table' => 'butler_notifier',
+  'table' => 'butler_alerts',
   'extends' => 'xPDOSimpleObject',
   'tableMeta' => 
   array (

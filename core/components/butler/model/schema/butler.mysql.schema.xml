@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model package="butler" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" version="1.1">
+	<object class="ButlerAlerts" table="butler_alerts" extends="xPDOSimpleObject">
+		<field key="status" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
+		<field key="name" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="subject" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="tpl" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="flag" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" />
+		<field key="email" dbtype="text" phptype="string" null="true" />
+		<field key="users" dbtype="text" phptype="string" null="true" />
+		<field key="usergroups" dbtype="text" phptype="string" null="true" />
+		<field key="task_id" dbtype="int" precision="10" phptype="integer" null="true" index="index" />
+
+		<index alias="task_id" name="task_id" primary="false" unique="false" type="BTREE" >
+			<column key="task_id" length="" collation="A" null="true" />
+		</index>
+		<index alias="status" name="status" primary="false" unique="false" type="BTREE" >
+			<column key="status" length="" collation="A" null="false" />
+		</index>
+	</object>
 	<object class="ButlerBaseline" table="butler_baseline" extends="xPDOSimpleObject">
 		<field key="file_name" dbtype="varchar" precision="255" phptype="string" null="true" />
 		<field key="file_path" dbtype="varchar" precision="255" phptype="string" null="true" index="index" />
@@ -33,24 +51,6 @@
 		</index>
 		<index alias="run_id" name="run_id" primary="false" unique="false" type="BTREE" >
 			<column key="run_id" length="" collation="A" null="true" />
-		</index>
-	</object>
-	<object class="ButlerNotifier" table="butler_notifier" extends="xPDOSimpleObject">
-		<field key="status" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
-		<field key="name" dbtype="varchar" precision="255" phptype="string" null="true" />
-		<field key="subject" dbtype="varchar" precision="255" phptype="string" null="true" />
-		<field key="tpl" dbtype="varchar" precision="255" phptype="string" null="true" />
-		<field key="flag" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" />
-		<field key="email" dbtype="text" phptype="string" null="true" />
-		<field key="users" dbtype="text" phptype="string" null="true" />
-		<field key="usergroups" dbtype="text" phptype="string" null="true" />
-		<field key="task_id" dbtype="int" precision="10" phptype="integer" null="true" index="index" />
-
-		<index alias="task_id" name="task_id" primary="false" unique="false" type="BTREE" >
-			<column key="task_id" length="" collation="A" null="true" />
-		</index>
-		<index alias="status" name="status" primary="false" unique="false" type="BTREE" >
-			<column key="status" length="" collation="A" null="false" />
 		</index>
 	</object>
 	<object class="ButlerRunlog" table="butler_runlog" extends="xPDOSimpleObject">
